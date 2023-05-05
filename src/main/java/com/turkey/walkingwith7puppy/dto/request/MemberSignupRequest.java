@@ -1,4 +1,4 @@
-package com.turkey.walkingwith7puppy.dto;
+package com.turkey.walkingwith7puppy.dto.request;
 
 import com.turkey.walkingwith7puppy.entity.Member;
 import lombok.Getter;

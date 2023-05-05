@@ -1,7 +1,7 @@
 package com.turkey.walkingwith7puppy.service;
 
-import com.turkey.walkingwith7puppy.dto.MemberLoginRequest;
-import com.turkey.walkingwith7puppy.dto.MemberSignupRequest;
+import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
+import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
 import com.turkey.walkingwith7puppy.entity.Member;
 
 import com.turkey.walkingwith7puppy.jwt.JwtUtil;
