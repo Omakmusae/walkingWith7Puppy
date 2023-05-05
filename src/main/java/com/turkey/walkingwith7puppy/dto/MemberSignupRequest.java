@@ -7,9 +7,7 @@ import lombok.Getter;
 public class MemberSignupRequest {
 
     private String username;
-
     private String password;
-
     private String email;
 
     public static Member toEntity(MemberSignupRequest memberSignupRequest) {
