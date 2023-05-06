@@ -36,9 +36,8 @@ public class WebSecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/user/**", "/profile").permitAll()
                 .antMatchers(HttpMethod.GET, "/boards").permitAll()
                 .anyRequest().authenticated()
                 .and()
