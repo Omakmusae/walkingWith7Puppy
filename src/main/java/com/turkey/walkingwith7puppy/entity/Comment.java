@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.turkey.walkingwith7puppy.dto.request.CommentCreateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,5 +32,17 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+
+    public Comment(CommentCreateRequest commentCreateRequest,Board board,Member member){
+        this.content = commentCreateRequest.getContent();
+        this.board = getBoard();
+        this.member = getMember();
+
+    }
+    public void update(CommentCreateRequest commentCreateRequest){
+        this.content = commentCreateRequest.getContent();
+    }
+
 
 }
