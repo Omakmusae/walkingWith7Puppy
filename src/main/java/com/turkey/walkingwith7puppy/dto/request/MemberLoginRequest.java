@@ -1,14 +1,11 @@
-package com.turkey.walkingwith7puppy.dto;
+package com.turkey.walkingwith7puppy.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 public class MemberLoginRequest {
 
-
-
     private String username;
-
     private String password;
+
 }

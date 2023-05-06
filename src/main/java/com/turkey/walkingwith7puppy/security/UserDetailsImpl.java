@@ -1,7 +1,6 @@
 package com.turkey.walkingwith7puppy.security;
 
 import com.turkey.walkingwith7puppy.entity.Member;
-//import com.sparta.hanghaememo.entity.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,22 +10,21 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-
     private final Member member;
     private final String username;
 
-    public UserDetailsImpl(Member member,String username){
+    public UserDetailsImpl(Member member, String username) {
         this.member = member;
         this.username = username;
     }
-    public Member getUser(){
+
+    public Member getUser() {
         return member;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        UserRoleEnum role = user.getRole();
         String authority = "USER";
-
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);
@@ -63,9 +61,5 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
-
-
-
-
 
 }

@@ -1,4 +1,4 @@
-package com.turkey.walkingwith7puppy.dto;
+package com.turkey.walkingwith7puppy.dto.request;
 
 import com.turkey.walkingwith7puppy.entity.Member;
 import lombok.Getter;
@@ -7,9 +7,7 @@ import lombok.Getter;
 public class MemberSignupRequest {
 
     private String username;
-
     private String password;
-
     private String email;
 
     public static Member toEntity(MemberSignupRequest memberSignupRequest) {
