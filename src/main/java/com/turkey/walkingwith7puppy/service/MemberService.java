@@ -3,7 +3,6 @@ package com.turkey.walkingwith7puppy.service;
 import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
 import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
 import com.turkey.walkingwith7puppy.entity.Member;
-
 import com.turkey.walkingwith7puppy.jwt.JwtUtil;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 
@@ -26,6 +25,7 @@ public class MemberService {
 
 	@Transactional
 	public void signup(MemberSignupRequest memberSignupRequest) {
+
 		Optional<Member> searchedMember = memberRepository.findByUsername(memberSignupRequest.getUsername());
 
 		if (searchedMember.isPresent()) {
@@ -37,6 +37,7 @@ public class MemberService {
 	}
 
 	public void login(MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
+
 		String username = memberLoginRequest.getUsername();
 		String password = memberLoginRequest.getPassword();
 
@@ -50,5 +51,4 @@ public class MemberService {
 
 		response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(searchedMember.getUsername()));
 	}
-
 }
