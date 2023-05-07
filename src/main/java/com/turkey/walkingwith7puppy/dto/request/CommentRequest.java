@@ -11,6 +11,7 @@ import lombok.Setter;
 public class CommentRequest {
 
     private String content;
+
     @Setter private Member member;
     @Setter private Board board;
 
