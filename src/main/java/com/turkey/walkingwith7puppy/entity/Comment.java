@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.turkey.walkingwith7puppy.dto.request.CommentCreateRequest;
+import com.turkey.walkingwith7puppy.dto.request.CommentRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,16 +33,17 @@ public class Comment {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-
-    public Comment(CommentCreateRequest commentCreateRequest,Board board,Member member){
-        this.content = commentCreateRequest.getContent();
-        this.board = getBoard();
-        this.member = getMember();
-
-    }
-    public void update(CommentCreateRequest commentCreateRequest){
-        this.content = commentCreateRequest.getContent();
+    private Comment(String content, Member member, Board board) {
+        this.content = content;
+        this.member = member;
+        this.board = board;
     }
 
+    public static Comment of(String content, Member member, Board board) {
+        return new Comment(content, member, board);
+    }
 
+    public void updateContent(CommentRequest commentRequest){
+        this.content = commentRequest.getContent();
+    }
 }
