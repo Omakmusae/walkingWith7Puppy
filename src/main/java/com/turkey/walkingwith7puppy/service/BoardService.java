@@ -27,17 +27,17 @@ public class BoardService {
 	public List<BoardResponse> searchBoards() {
 
 		return boardRepository.findAllJoinFetch()
-			.stream()
-			.map(BoardResponse::from)
-			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
-			.collect(Collectors.toList());
+				.stream()
+				.map(BoardResponse::from)
+				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+				.collect(Collectors.toList());
 	}
 
 	public BoardResponse searchBoard(final Long boardId) {
 
 		return boardRepository.findById(boardId)
-			.map(BoardResponse::from)
-			.orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - boardId: " + boardId));
+				.map(BoardResponse::from)
+				.orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - boardId: " + boardId));
 	}
 
 	@Transactional
@@ -51,25 +51,30 @@ public class BoardService {
 	public void updateBoard(final Member member, final Long boardId, final BoardRequest boardRequest) {
 
 		Board board = boardRepository.findById(boardId).orElseThrow(
-			() -> new IllegalArgumentException("게시물이 없습니다")
+				() -> new IllegalArgumentException("게시물이 없습니다")
 		);
+		System.out.println(board.getMember().getUsername());
+		System.out.println(member.getUsername());
 
 		if (board.getMember().getUsername().equals(member.getUsername())) {
 			board.updateBoard(boardRequest);
+		} else {
+			throw new IllegalArgumentException("권한이 없습니다");
 		}
-		throw new IllegalArgumentException("권한이 없습니다");
+
 	}
 
 	@Transactional
 	public void deleteBoard(final Member member, final Long boardId) {
 
 		Board board = boardRepository.findById(boardId).orElseThrow(
-			() -> new IllegalArgumentException("게시물이 없습니다")
+				() -> new IllegalArgumentException("게시물이 없습니다")
 		);
 
 		if (board.getMember().getUsername().equals(member.getUsername())) {
 			boardRepository.deleteById(boardId);
+		} else {
+			throw new IllegalArgumentException("권한이 없습니다");
 		}
-		throw new IllegalArgumentException("권한이 없습니다");
 	}
 }

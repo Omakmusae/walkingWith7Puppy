@@ -43,8 +43,10 @@ public class CommentService {
 
         if (comment.getMember().getUsername().equals(member.getUsername())) {
             comment.updateContent(commentRequest);
+        } else {
+            throw new IllegalArgumentException("권한이 없습니다");
         }
-        throw new IllegalArgumentException("권한이 없습니다");
+
     }
 
     @Transactional
@@ -59,7 +61,9 @@ public class CommentService {
 
         if (comment.getMember().getUsername().equals(member.getUsername())) {
             commentRepository.delete(comment);
+        } else {
+            throw new IllegalArgumentException("권한이 없습니다");
         }
-        throw new IllegalArgumentException("권한이 없습니다");
+
     }
 }
