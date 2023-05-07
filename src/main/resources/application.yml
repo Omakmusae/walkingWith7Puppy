@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    group:
+      local:
+        - real-db
+        - common
+      dev:
+        - real-db
+        - common
