@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
