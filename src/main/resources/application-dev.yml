@@ -7,3 +7,4 @@ spring:
     username: ENC(IuMoK7PxMYN67m1/pyLlyQ==)
     password: ENC(/gI8xPZrcpPpaVyjdPv3SyxN+zhXO7UA)
     driver-class-name: com.mysql.cj.jdbc.Driver
+

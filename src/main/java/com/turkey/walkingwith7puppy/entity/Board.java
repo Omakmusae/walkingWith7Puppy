@@ -38,6 +38,7 @@ public class Board {
     @Column(nullable = false)
     private String address;
 
+    @Column
     private String img;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -14,6 +14,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
 jwt:
   secret:
     key: ENC(m1hN8WVpNGVqyNLKW0A5DYPXix73gOpQWqxTBZuUACg8ZCPWr8WlsYoJAEP2CvAufpAigAAcIEYZW8XE3wwskICPI/H5phDcHHofN3x/7SVbw0kH6jiaqeG8mgOLpYntt8+TXq0DpnjU5tCQTm9OFIEgOnmEVFEIlkH2xKcR/O9JvduzXzcZcA==)
