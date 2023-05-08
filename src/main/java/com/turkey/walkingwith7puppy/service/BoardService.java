@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,13 +76,6 @@ public class BoardService {
 	public void updateBoard(final Member member, final Long boardId, final BoardRequest boardRequest, final MultipartFile file) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-		String[] imgId = board.getImg().split("/");
-		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
-		String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-		saveimg(fileName, file);
-		String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString();
-		boardRequest.setMember(member);
-		boardRequest.setImg(imagePath);
 
 		throwIfNotOwner(board, member.getUsername());
 
@@ -100,8 +92,7 @@ public class BoardService {
 	public void deleteBoard(final Member member, final Long boardId) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-		String[] imgId = board.getImg().split("/");
-		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
+
 		throwIfNotOwner(board, member.getUsername());
 
 		deleteImg(board);
