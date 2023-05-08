@@ -3,8 +3,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://db-mysql.cyg0hh5az4ou.eu-west-1.rds.amazonaws.com:3306/sparta7?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: admin
-    password: hanghae7
+    url: ENC(Le32ORBbdCTjptHxWjmSU9JQET+bpQRT28wJDXAiQ/vWQA/I9M2CUgrmwUFTVIZadQ7TLjl8OqaSuVvDMuA5CQSMI9bGjEfECBUC846qH8hwPGT9puJ5pwS8xXxRiHe1ATGoBP/LhBt1zD6v5xATdWLw5p0oQWiFgENKuzerO+nJX9sgkWAnUw==)
+    username: ENC(IuMoK7PxMYN67m1/pyLlyQ==)
+    password: ENC(/gI8xPZrcpPpaVyjdPv3SyxN+zhXO7UA)
     driver-class-name: com.mysql.cj.jdbc.Driver
 
