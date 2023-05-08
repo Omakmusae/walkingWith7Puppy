@@ -29,3 +29,13 @@ spring:
 jwt:
   secret:
     key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+
+cloud:
+  aws:
+    s3:
+      bucket: walkingpuppy7
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ENC(mN6Tv57KCMbkb51e9erbI8sCI+DIoxS7WxX6gT/n2so=)
+      secretKey: ENC(yjwtMBnBPx8RWMQ+j+cshQBGS61q2bu7iTS62WKj+7f9fhahmDpT3vCztEnZ2iC/ByaDk8z6+48=)
