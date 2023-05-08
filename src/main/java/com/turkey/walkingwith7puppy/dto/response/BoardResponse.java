@@ -19,6 +19,7 @@ public class BoardResponse {
 	private String username;
 	private String address;
 	private String img;
+
 	private List<CommentDto> comments = new ArrayList<>();
 
 	public static BoardResponse from(Board entity) {

@@ -34,16 +34,15 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	private String S3Bucket = "walkingpuppy7"; // Bucket 이름
-	@Autowired
-	AmazonS3Client amazonS3Client;
+	private final AmazonS3Client amazonS3Client;
 
 	public List<BoardResponse> searchBoards() {
 
 		return boardRepository.findAllJoinFetch()
-				.stream()
-				.map(BoardResponse::from)
-				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
-				.collect(Collectors.toList());
+			.stream()
+			.map(BoardResponse::from)
+			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+			.collect(Collectors.toList());
 	}
 
 	public BoardResponse searchBoard(final Long boardId) {
@@ -55,18 +54,18 @@ public class BoardService {
 
 	public List<BoardResponse> searchBoards(String address) {
 
-		return boardRepository.findAllJoinFetchANDAddress(address)
-				.stream()
-				.map(BoardResponse::from)
-				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
-				.collect(Collectors.toList());
+		return boardRepository.findByAddressJoinFetch(address)
+			.stream()
+			.map(BoardResponse::from)
+			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+			.collect(Collectors.toList());
 	}
 
 	@Transactional
-	public void createBoard(final Member member, final BoardRequest boardRequest, MultipartFile file) throws IOException {
-		String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-		saveimg(fileName, file);
-		String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString();
+	public void createBoard(final Member member, final BoardRequest boardRequest, final MultipartFile file) {
+
+		String imagePath = saveImg(file);
+
 		boardRequest.setMember(member);
 		boardRequest.setImg(imagePath);
 
@@ -75,7 +74,7 @@ public class BoardService {
 
 
 	@Transactional
-	public void updateBoard(final Member member, final Long boardId, final BoardRequest boardRequest, MultipartFile file) throws IOException {
+	public void updateBoard(final Member member, final Long boardId, final BoardRequest boardRequest, final MultipartFile file) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
 		String[] imgId = board.getImg().split("/");
@@ -87,6 +86,12 @@ public class BoardService {
 		boardRequest.setImg(imagePath);
 
 		throwIfNotOwner(board, member.getUsername());
+
+		deleteImg(board);
+
+		String imagePath = saveImg(file);
+
+		boardRequest.setImg(imagePath);
 
 		board.updateBoard(boardRequest);
 	}
@@ -99,19 +104,36 @@ public class BoardService {
 		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 		throwIfNotOwner(board, member.getUsername());
 
+		deleteImg(board);
+
 		boardRepository.delete(board);
 	}
 
-	void saveimg (String filename, MultipartFile file) throws IOException {
+	private String saveImg (final MultipartFile file) {
+
+		String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 		long size = file.getSize();
 		ObjectMetadata objectMetaData = new ObjectMetadata();
 		objectMetaData.setContentType(file.getContentType());
 		objectMetaData.setContentLength(size);
 
-		amazonS3Client.putObject(
-			new PutObjectRequest(S3Bucket, filename, file.getInputStream(), objectMetaData)
-				.withCannedAcl(CannedAccessControlList.PublicRead)
-		);
+		try {
+			amazonS3Client.putObject(
+				new PutObjectRequest(S3Bucket, fileName, file.getInputStream(), objectMetaData)
+					.withCannedAcl(CannedAccessControlList.PublicRead)
+			);
+		} catch (IOException e) {
+			throw new RestApiException(CommonErrorCode.IO_EXCEPTION);
+		}
+
+		return amazonS3Client.getUrl(S3Bucket, fileName).toString();
+	}
+
+	private void deleteImg(final Board board) {
+
+		String[] imgId = board.getImg().split("/");
+
+		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 	}
 
 	private Board findBoardByIdOrElseThrow(Long boardId) {

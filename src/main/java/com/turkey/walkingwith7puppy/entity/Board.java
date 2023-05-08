@@ -48,7 +48,7 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 
-    private Board(String title, String content, String address, String img , Member member) {
+    private Board(String title, String content, String address, String img, Member member) {
         this.title = title;
         this.content = content;
         this.address = address;
@@ -56,8 +56,8 @@ public class Board {
         this.member = member;
     }
 
-    public static Board of(String title, String content, String address, String img ,Member member) {
-        return new Board(title, content, address, img ,member);
+    public static Board of(String title, String content, String address, String img, Member member) {
+        return new Board(title, content, address, img, member);
     }
 
     public void updateBoard(BoardRequest boardRequest){

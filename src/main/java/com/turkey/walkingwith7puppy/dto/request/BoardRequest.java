@@ -12,6 +12,7 @@ public class BoardRequest {
 	private String title;
 	private String content;
 	private String address;
+
 	@Setter private String img;
 	@Setter private Member member;
 

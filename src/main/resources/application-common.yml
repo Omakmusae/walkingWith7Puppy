@@ -17,8 +17,7 @@ spring:
 
 jwt:
   secret:
-
-    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+    key: ENC(m1hN8WVpNGVqyNLKW0A5DYPXix73gOpQWqxTBZuUACg8ZCPWr8WlsYoJAEP2CvAufpAigAAcIEYZW8XE3wwskICPI/H5phDcHHofN3x/7SVbw0kH6jiaqeG8mgOLpYntt8+TXq0DpnjU5tCQTm9OFIEgOnmEVFEIlkH2xKcR/O9JvduzXzcZcA==)
 
 cloud:
   aws:
@@ -27,6 +26,5 @@ cloud:
     stack.auto: false
     region.static: ap-northeast-2
     credentials:
-      accessKey: AKIAULT7JB2ZZ577R2H7
-      secretKey: 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
-
+      accessKey: ENC(eh+u4tzJT+/Tai7jG3nv8xzHfXRI2GaUv9W1I3n3sIg=)
+      secretKey: ENC(RRMyYq0UImjJej/d6jsK/SFZYTNv5YdggQlwUWK0SNB3g12pTSNI3U9FjH05Cl/LsvxjC5IgxaE=)

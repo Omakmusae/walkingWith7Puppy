@@ -13,6 +13,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 	List<Board> findAllJoinFetch();
 
 	@Query("select distinct B from Board B left join fetch B.comments where B.address like %:address%")
-	List<Board> findAllJoinFetchANDAddress(@Param("address") String address);
-
+	List<Board> findByAddressJoinFetch(@Param("address") String address);
 }
