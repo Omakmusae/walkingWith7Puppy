@@ -26,5 +26,5 @@ cloud:
     stack.auto: false
     region.static: ap-northeast-2
     credentials:
-      accessKey: ENC(eh+u4tzJT+/Tai7jG3nv8xzHfXRI2GaUv9W1I3n3sIg=)
-      secretKey: ENC(RRMyYq0UImjJej/d6jsK/SFZYTNv5YdggQlwUWK0SNB3g12pTSNI3U9FjH05Cl/LsvxjC5IgxaE=)
+      accessKey: ENC(mN6Tv57KCMbkb51e9erbI8sCI+DIoxS7WxX6gT/n2so=)
+      secretKey: ENC(yjwtMBnBPx8RWMQ+j+cshQBGS61q2bu7iTS62WKj+7f9fhahmDpT3vCztEnZ2iC/ByaDk8z6+48=)

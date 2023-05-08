@@ -123,7 +123,8 @@ public class BoardService {
 	private void deleteImg(final Board board) {
 
 		String[] imgId = board.getImg().split("/");
-
+		System.out.println("******************");
+		System.out.println(imgId[imgId.length - 1]);
 		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 	}
 
