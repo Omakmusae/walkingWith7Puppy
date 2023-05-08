@@ -5,11 +5,9 @@ import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
 import com.turkey.walkingwith7puppy.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,18 +19,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/user/signup")
-    public ResponseEntity<Void> signup(@RequestBody @Valid final MemberSignupRequest memberSignupRequest) {
-
+    public void signup(@RequestBody MemberSignupRequest memberSignupRequest) {
         memberService.signup(memberSignupRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<Void> login(
-        @RequestBody final MemberLoginRequest memberLoginRequest,
-        final HttpServletResponse response) {
-
+    public void login(@RequestBody MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
         memberService.login(memberLoginRequest, response);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+
 }
