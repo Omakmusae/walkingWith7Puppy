@@ -38,6 +38,8 @@ public class Board {
     @Column(nullable = false)
     private String address;
 
+    private String img;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
@@ -45,20 +47,22 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 
-    private Board(String title, String content, String address, Member member) {
+    private Board(String title, String content, String address, String img, Member member) {
         this.title = title;
         this.content = content;
         this.address = address;
+        this.img = img;
         this.member = member;
     }
 
-    public static Board of(String title, String content, String address, Member member) {
-        return new Board(title, content, address, member);
+    public static Board of(String title, String content, String address, String img, Member member) {
+        return new Board(title, content, address, img, member);
     }
 
     public void updateBoard(BoardRequest boardRequest){
         this.title = boardRequest.getTitle();
         this.content = boardRequest.getContent();
         this.address = boardRequest.getAddress();
+        this.img = boardRequest.getImg();
     }
 }
