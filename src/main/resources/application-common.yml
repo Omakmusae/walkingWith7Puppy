@@ -16,4 +16,4 @@ spring:
 
 jwt:
   secret:
-    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+    key: ENC(m1hN8WVpNGVqyNLKW0A5DYPXix73gOpQWqxTBZuUACg8ZCPWr8WlsYoJAEP2CvAufpAigAAcIEYZW8XE3wwskICPI/H5phDcHHofN3x/7SVbw0kH6jiaqeG8mgOLpYntt8+TXq0DpnjU5tCQTm9OFIEgOnmEVFEIlkH2xKcR/O9JvduzXzcZcA==)
