@@ -1,0 +1,34 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    #url: jdbc:h2:mem:db;MODE=MYSQL
+    #username: sa
+    #password:
+    #github 전달시 전달안해야할 정보.. 해결 필요
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db-mysql.cyg0hh5az4ou.eu-west-1.rds.amazonaws.com:3306/sparta7?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: hanghae7
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        ddl_auto: update
+
+    open-in-view: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+
+jwt:
+  secret:
+    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+

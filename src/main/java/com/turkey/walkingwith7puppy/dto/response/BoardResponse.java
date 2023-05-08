@@ -18,6 +18,7 @@ public class BoardResponse {
 	private String content;
 	private String username;
 	private String address;
+	private String img;
 	private List<CommentDto> comments = new ArrayList<>();
 
 	public static BoardResponse from(Board entity) {
@@ -28,6 +29,7 @@ public class BoardResponse {
 			entity.getContent(),
 			entity.getMember().getUsername(),
 			entity.getAddress(),
+			entity.getImg(),
 			entity.getComments()
 				.stream().map(CommentDto::from)
 				.toList()

@@ -1,5 +1,6 @@
 package com.turkey.walkingwith7puppy.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
@@ -38,20 +41,26 @@ public class BoardController {
 
 	@PostMapping("/boards")
 	public ResponseEntity<Void> createBoard(
-			@AuthenticationPrincipal final UserDetailsImpl userDetails,
-			@RequestBody @Valid final BoardRequest boardRequest) {
 
-		boardService.createBoard(userDetails.getMember(), boardRequest);
+		@AuthenticationPrincipal final UserDetailsImpl userDetails,
+		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
+		@RequestPart(value = "ImgUrl") MultipartFile file) throws
+		IOException {
+
+
+		boardService.createBoard(userDetails.getMember(), boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
 	@PutMapping("/boards/{boardId}")
 	public ResponseEntity<Void> updateBoard(
-			@AuthenticationPrincipal final UserDetailsImpl userDetails,
-			@PathVariable final Long boardId,
-			@RequestBody @Valid final BoardRequest boardRequest) {
 
-		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest);
+		@AuthenticationPrincipal final UserDetailsImpl userDetails,
+		@PathVariable final Long boardId,
+		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
+		@RequestPart(value = "ImgUrl") MultipartFile file) throws IOException {
+		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
+
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 

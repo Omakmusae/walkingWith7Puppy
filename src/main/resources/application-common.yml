@@ -14,6 +14,19 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
 jwt:
   secret:
-    key: ENC(m1hN8WVpNGVqyNLKW0A5DYPXix73gOpQWqxTBZuUACg8ZCPWr8WlsYoJAEP2CvAufpAigAAcIEYZW8XE3wwskICPI/H5phDcHHofN3x/7SVbw0kH6jiaqeG8mgOLpYntt8+TXq0DpnjU5tCQTm9OFIEgOnmEVFEIlkH2xKcR/O9JvduzXzcZcA==)
+
+    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+
+cloud:
+  aws:
+    s3:
+      bucket: walkingpuppy7
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIAULT7JB2ZZ577R2H7
+      secretKey: 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
+
