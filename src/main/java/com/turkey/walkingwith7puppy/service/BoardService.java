@@ -28,10 +28,10 @@ public class BoardService {
 	public List<BoardResponse> searchBoards() {
 
 		return boardRepository.findAllJoinFetch()
-				.stream()
-				.map(BoardResponse::from)
-				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
-				.collect(Collectors.toList());
+			.stream()
+			.map(BoardResponse::from)
+			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+			.collect(Collectors.toList());
 	}
 
 	public BoardResponse searchBoard(final Long boardId) {
@@ -43,11 +43,11 @@ public class BoardService {
 
 	public List<BoardResponse> searchBoards(String address) {
 
-		return boardRepository.findAllJoinFetchANDAddress(address)
-				.stream()
-				.map(BoardResponse::from)
-				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
-				.collect(Collectors.toList());
+		return boardRepository.findByAddressJoinFetch(address)
+			.stream()
+			.map(BoardResponse::from)
+			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+			.collect(Collectors.toList());
 	}
 
 	@Transactional
