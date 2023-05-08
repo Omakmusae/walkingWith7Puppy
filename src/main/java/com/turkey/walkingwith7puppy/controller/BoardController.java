@@ -69,4 +69,6 @@ public class BoardController {
 		boardService.deleteBoard(userDetails.getMember(), boardId);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
+
+
 }
