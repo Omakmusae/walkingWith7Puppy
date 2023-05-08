@@ -41,6 +41,15 @@ public class BoardService {
 		return BoardResponse.from(board);
 	}
 
+	public List<BoardResponse> searchBoards(String address) {
+
+		return boardRepository.findAllJoinFetchANDAddress(address)
+				.stream()
+				.map(BoardResponse::from)
+				// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+				.collect(Collectors.toList());
+	}
+
 	@Transactional
 	public void createBoard(final Member member, final BoardRequest boardRequest) {
 
