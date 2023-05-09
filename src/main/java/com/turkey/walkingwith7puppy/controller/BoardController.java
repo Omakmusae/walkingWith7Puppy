@@ -41,23 +41,22 @@ public class BoardController {
 
 	@PostMapping("/boards")
 	public ResponseEntity<Void> createBoard(
-
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") MultipartFile file) {
+		@RequestPart(value = "ImgUrl") final MultipartFile file) {
+
 		boardService.createBoard(userDetails.getMember(), boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
 	@PutMapping("/boards/{boardId}")
 	public ResponseEntity<Void> updateBoard(
-
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@PathVariable final Long boardId,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") MultipartFile file) {
-		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
+		@RequestPart(value = "ImgUrl") final MultipartFile file) {
 
+		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
@@ -70,11 +69,10 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	@GetMapping("/boards/Search")
+	@GetMapping("/boards/search")
 	public ResponseEntity<List<BoardResponse>> searchBoardList(@RequestParam String address) {
-		System.out.println(address);
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(boardService.searchBoards(address));
-	}
 
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(boardService.searchBoards(address));
+	}
 }
