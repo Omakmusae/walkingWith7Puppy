@@ -41,7 +41,7 @@ public class BoardController {
 	public ResponseEntity<Void> createBoard(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") final MultipartFile file) {
+		@RequestPart(value = "img") final MultipartFile file) {
 
 		boardService.createBoard(userDetails.getMember(), boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -52,7 +52,7 @@ public class BoardController {
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@PathVariable final Long boardId,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") final MultipartFile file) {
+		@RequestPart(value = "img") final MultipartFile file) {
 
 		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);

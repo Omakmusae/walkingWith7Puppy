@@ -1,5 +1,8 @@
 package com.turkey.walkingwith7puppy.dto.request;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 import com.turkey.walkingwith7puppy.entity.Board;
 import com.turkey.walkingwith7puppy.entity.Comment;
 import com.turkey.walkingwith7puppy.entity.Member;

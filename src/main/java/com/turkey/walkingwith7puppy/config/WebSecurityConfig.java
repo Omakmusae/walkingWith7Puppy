@@ -45,7 +45,6 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/boards/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/boards/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
