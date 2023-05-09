@@ -63,14 +63,14 @@ public class BoardController {
 
 	@DeleteMapping("/boards/{boardId}")
 	public ResponseEntity<Void> deleteArticle(
-			@AuthenticationPrincipal final UserDetailsImpl userDetails,
-			@PathVariable final Long boardId) {
+		@AuthenticationPrincipal final UserDetailsImpl userDetails,
+		@PathVariable final Long boardId) {
 
 		boardService.deleteBoard(userDetails.getMember(), boardId);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	@GetMapping("/boards/123")
+	@GetMapping("/boards/Search")
 	public ResponseEntity<List<BoardResponse>> searchBoardList(@RequestParam String address) {
 		System.out.println(address);
 		return ResponseEntity.status(HttpStatus.OK)
