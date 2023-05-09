@@ -18,10 +18,10 @@ public class MemberSignupRequest {
     @Email
     private String email;
 
-    public static Member toEntity(MemberSignupRequest memberSignupRequest) {
+    public static Member toEntity(MemberSignupRequest memberSignupRequest, String pw) {
         return Member.of(
                 memberSignupRequest.getUsername(),
-                memberSignupRequest.getPassword(),
+                pw,
                 memberSignupRequest.getEmail()
         );
     }
