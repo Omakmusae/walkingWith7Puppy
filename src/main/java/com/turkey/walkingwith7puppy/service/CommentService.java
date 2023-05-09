@@ -40,7 +40,7 @@ public class CommentService {
 
         throwIfNotOwner(comment, member.getUsername());
 
-        comment.updateContent(comment.getContent());
+        comment.updateContent(commentDto.getContent());
     }
 
     @Transactional

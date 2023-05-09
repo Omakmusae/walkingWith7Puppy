@@ -9,11 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CommonErrorCode implements ErrorCode {
 
-	INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
-	RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception"),
-	IO_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "IO Exception"),
-	TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "Invalid token included")
+	RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 글은 존재하지 않습니다"),
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버에서 문제가 발생했습니다"),
+	IO_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 저장 중 내부 서버에서 문제가 발생했습니다"),
+	TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "토큰 에러가 발생했습니다")
 	;
 
 	private final HttpStatus httpStatus;
