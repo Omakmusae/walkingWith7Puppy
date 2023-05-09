@@ -1,11 +1,14 @@
 package com.turkey.walkingwith7puppy.service;
 
+import com.turkey.walkingwith7puppy.dto.TokenDto;
 import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
 import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
 import com.turkey.walkingwith7puppy.entity.Member;
 
+import com.turkey.walkingwith7puppy.entity.RefreshToken;
 import com.turkey.walkingwith7puppy.jwt.JwtUtil;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
+import com.turkey.walkingwith7puppy.repository.RefreshTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +26,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public void signup(MemberSignupRequest memberSignupRequest) {
@@ -50,6 +54,18 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(searchedMember.getUsername()));
+        TokenDto tokenDto = jwtUtil.createAllToken(username);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUsername(username);
+
+        if(refreshToken.isPresent()) {
+            RefreshToken updateToken = refreshToken.get().updateToken(tokenDto.getRefreshToken().substring(7));
+            refreshTokenRepository.save(updateToken);
+        } else {
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken().substring(7), memberLoginRequest.getUsername());
+            refreshTokenRepository.save(newToken);
+        }
+
+        response.addHeader(jwtUtil.ACCESS_KEY, tokenDto.getAccessToken());
+        response.addHeader(jwtUtil.REFRESH_KEY, tokenDto.getRefreshToken());
     }
 }

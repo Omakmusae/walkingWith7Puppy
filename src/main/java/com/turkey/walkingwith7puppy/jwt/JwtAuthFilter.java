@@ -2,6 +2,9 @@ package com.turkey.walkingwith7puppy.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turkey.walkingwith7puppy.dto.SecurityExceptionDto;
+import com.turkey.walkingwith7puppy.entity.Member;
+import com.turkey.walkingwith7puppy.repository.MemberRepository;
+
 import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,27 +25,36 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Override
-    protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtUtil.resolveToken(request);
+        String access_token = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
+        String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
 
-        if (token != null) {
-            if (!jwtUtil.validateToken(token)) {
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+
+        if(access_token != null) {
+            if(jwtUtil.validateToken(access_token)) {      // 토큰 검증
+                setAuthentication(jwtUtil.getUserInfoFromToken(access_token));
+            } else if(refresh_token != null && jwtUtil.refreshTokenValidation(refresh_token)) {
+                String username = jwtUtil.getUserInfoFromToken(refresh_token);
+                Member member = memberRepository.findByUsername(username).get();
+                String newAccessToken = jwtUtil.createToken(username, "Access");
+                jwtUtil.setHeaderAccessToken(response, newAccessToken);
+                setAuthentication(username);
+            } else if(refresh_token == null) {
+                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED.value());
+                return;
+            } else {
+                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
-            Claims info = jwtUtil.getUserInfoFromToken(token);
-            setAuthentication(info.getSubject());
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);    // 다음 filter로 넘어가기
     }
 
+    // 스프링 시큐리티로 인증한 사용자의 상세 정보 저장
     public void setAuthentication(String username) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = jwtUtil.createAuthentication(username);
@@ -51,6 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 
+    // 예외 핸들러
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
         response.setStatus(statusCode);
         response.setContentType("application/json");
@@ -61,5 +74,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
         }
     }
-
 }

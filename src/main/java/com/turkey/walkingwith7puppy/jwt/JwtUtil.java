@@ -1,5 +1,8 @@
 package com.turkey.walkingwith7puppy.jwt;
 
+import com.turkey.walkingwith7puppy.dto.TokenDto;
+import com.turkey.walkingwith7puppy.entity.RefreshToken;
+import com.turkey.walkingwith7puppy.repository.RefreshTokenRepository;
 import com.turkey.walkingwith7puppy.security.UserDetailsServiceImpl;
 
 import io.jsonwebtoken.Claims;
@@ -21,19 +24,31 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    //테스트 커밋
-    public static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
+
     private final UserDetailsServiceImpl userDetailsService;
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+
+    // 사용자 권한 값의 키(role)
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    // Token 식별자. 토큰 앞에 붙는다.
+    private static final String BEARER_PREFIX = "Bearer ";
+    public static final String ACCESS_KEY = "ACCESS_KEY";
+    public static final String REFRESH_KEY = "REFRESH_KEY";
+    // 토큰 만료 시간 ms단위
+    private static final long ACCESS_TIME = 60 * 60 * 1000L;
+    private static final long REFRESH_TIME = 24 * 60 * 60 * 1000L;
+    private final RefreshTokenRepository refreshTokenRepository;
+
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -46,26 +61,40 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+    // header 토큰을 가져오기
+    public String resolveToken(HttpServletRequest request, String tokentype) {
+        String tokenType = tokentype.equals("ACCESS_KEY") ? ACCESS_KEY : REFRESH_KEY;
+        String bearerToken = request.getHeader(tokenType);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(BEARER_PREFIX.length());
+            return bearerToken.substring(7); // bearer과 공백 제거
         }
         return null;
     }
 
-    public String createToken(String username) {
-        Date date = new Date();
-
-        return BEARER_PREFIX +
-                Jwts.builder()
-                        .setSubject(username)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))
-                        .setIssuedAt(date)
-                        .signWith(key, signatureAlgorithm)
-                        .compact();
+    // ACCESS_TOKEN, REFRESH_TOKEN 생성
+    public TokenDto createAllToken(String username) {
+        return new TokenDto(createToken(username, "Access"), createToken(username, "Refresh"));
     }
 
+    // 토큰 생성
+    public String createToken(String username, String tokentype) {
+        Date date = new Date();
+        String role = "USER";
+        long expireTime = tokentype.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+
+        String jwToken =  BEARER_PREFIX +
+            Jwts.builder()
+                .setSubject(username)
+                .claim(AUTHORIZATION_HEADER, role)
+                .setExpiration(new Date(date.getTime() + expireTime))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
+        System.out.println(jwToken);
+        return jwToken;
+    }
+
+    // 토큰 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -82,12 +111,30 @@ public class JwtUtil {
         return false;
     }
 
-    public Claims getUserInfoFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    // RefreshToken 검증
+    public Boolean refreshTokenValidation(String token) {
+        if(!validateToken(token)) {
+            return false;
+        }
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUsername(getUserInfoFromToken(token));
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }
 
+
+    // 토큰에서 사용자 정보 가져오기
+    public String getUserInfoFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // 인증 객체 생성
     public Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        // 인증 객체 생성. SecurityContext의 principal(userDetails), credentials(비밀번호), authorities(권한 인증 객체)다.
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    // AccessToken 헤더 주입
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader(ACCESS_KEY, accessToken);
     }
 }
