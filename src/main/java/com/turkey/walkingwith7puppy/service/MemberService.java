@@ -2,8 +2,11 @@ package com.turkey.walkingwith7puppy.service;
 
 import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
 import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
+import com.turkey.walkingwith7puppy.entity.Board;
 import com.turkey.walkingwith7puppy.entity.Member;
 
+import com.turkey.walkingwith7puppy.exception.MemberErrorCode;
+import com.turkey.walkingwith7puppy.exception.RestApiException;
 import com.turkey.walkingwith7puppy.jwt.JwtUtil;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 
@@ -29,9 +32,7 @@ public class MemberService {
         Optional<Member> searchedMember = memberRepository.findByUsername(memberSignupRequest.getUsername());
         String password = passwordEncoder.encode(memberSignupRequest.getPassword());
 
-        if (searchedMember.isPresent()) {
-           throw new IllegalArgumentException("중복된 아이디가 있습니다.");
-        }
+        throwIfExistOwner(memberSignupRequest.getUsername());
 
         Member member = MemberSignupRequest.toEntity(memberSignupRequest, password);
         memberRepository.save(member);
@@ -51,5 +52,14 @@ public class MemberService {
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(searchedMember.getUsername()));
+    }
+
+    private void throwIfExistOwner(String loginUsername) {
+
+        Optional<Member> searchedMember = memberRepository.findByUsername(loginUsername);
+
+        if (searchedMember.isPresent()) {
+            throw new RestApiException(MemberErrorCode.DUPLICATED_MEMBER);
+        }
     }
 }
