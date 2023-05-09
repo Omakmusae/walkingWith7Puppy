@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Board extends Timestamped{
+public class Board extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

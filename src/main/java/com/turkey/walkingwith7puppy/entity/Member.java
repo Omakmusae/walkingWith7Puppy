@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends Timestamped {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +37,4 @@ public class Member {
 	public static Member of(String username, String password, String email) {
 		return new Member(username, password, email);
 	}
-
 }
