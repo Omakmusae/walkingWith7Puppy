@@ -34,12 +34,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = jwtUtil.resolveToken(request);
 
         if (token != null) {
-            if (!jwtUtil.validateToken(token)) {
-                jwtExceptionHandler(response);
-                return;
+            if (jwtUtil.validateToken(token)) {
+                Claims info = jwtUtil.getUserInfoFromToken(token);
+                setAuthentication(info.getSubject());
             }
-            Claims info = jwtUtil.getUserInfoFromToken(token);
-            setAuthentication(info.getSubject());
         }
         filterChain.doFilter(request, response);
     }
@@ -52,15 +50,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 
-    public void jwtExceptionHandler(HttpServletResponse response) {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType("application/json");
-        try {
-            String json = new ObjectMapper().writeValueAsString(CommonErrorCode.TOKEN_ERROR);
-            response.getWriter().write(json);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
+    // public void jwtExceptionHandler(HttpServletResponse response) {
+    //     response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    //     response.setContentType("application/json");
+    //     try {
+    //         String json = new ObjectMapper().writeValueAsString(CommonErrorCode.TOKEN_ERROR);
+    //         response.getWriter().write(json);
+    //     } catch (Exception e) {
+    //         log.error(e.getMessage());
+    //     }
+    // }
 
 }
