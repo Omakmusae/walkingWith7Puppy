@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
 
         if(access_token != null) {
-            if(jwtUtil.validateToken(access_token)) {      // 토큰 검증
+            if(jwtUtil.validateToken(access_token)) {
                 setAuthentication(jwtUtil.getUserInfoFromToken(access_token));
             } else if(refresh_token != null && jwtUtil.refreshTokenValidation(refresh_token)) {
                 String username = jwtUtil.getUserInfoFromToken(refresh_token);
@@ -53,7 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        filterChain.doFilter(request, response);    // 다음 filter로 넘어가기
+        filterChain.doFilter(request, response);
     }
 
     public void setAuthentication(String username) {
