@@ -41,8 +41,9 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void login(MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
+
         String username = memberLoginRequest.getUsername();
         String password = memberLoginRequest.getPassword();
 

@@ -16,12 +16,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
@@ -32,7 +35,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String access_token = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
         String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
-
 
         if(access_token != null) {
             if(jwtUtil.validateToken(access_token)) {      // 토큰 검증
@@ -54,17 +56,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);    // 다음 filter로 넘어가기
     }
 
-    // 스프링 시큐리티로 인증한 사용자의 상세 정보 저장
     public void setAuthentication(String username) {
+
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = jwtUtil.createAuthentication(username);
         context.setAuthentication(authentication);
-
         SecurityContextHolder.setContext(context);
     }
 
     // 예외 핸들러
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
+
         response.setStatus(statusCode);
         response.setContentType("application/json");
         try {
