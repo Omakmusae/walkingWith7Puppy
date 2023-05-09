@@ -26,7 +26,6 @@ import com.turkey.walkingwith7puppy.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class BoardService {
 
@@ -35,6 +34,7 @@ public class BoardService {
 	private String S3Bucket = "walkingpuppy7"; // Bucket 이름
 	private final AmazonS3Client amazonS3Client;
 
+	@Transactional(readOnly = true)
 	public List<BoardResponse> searchBoards() {
 
 		return boardRepository.findAllJoinFetch()
@@ -44,6 +44,7 @@ public class BoardService {
 			.collect(Collectors.toList());
 	}
 
+	@Transactional(readOnly = true)
 	public BoardResponse searchBoard(final Long boardId) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
@@ -51,6 +52,7 @@ public class BoardService {
 		return BoardResponse.from(board);
 	}
 
+	@Transactional(readOnly = true)
 	public List<BoardResponse> searchBoards(String address) {
 
 		return boardRepository.findByAddressJoinFetch(address)
@@ -123,8 +125,6 @@ public class BoardService {
 	private void deleteImg(final Board board) {
 
 		String[] imgId = board.getImg().split("/");
-		System.out.println("******************");
-		System.out.println(imgId[imgId.length - 1]);
 		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 	}
 
