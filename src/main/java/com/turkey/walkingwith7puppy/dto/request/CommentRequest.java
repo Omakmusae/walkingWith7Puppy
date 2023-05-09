@@ -10,12 +10,15 @@ import lombok.Setter;
 @Getter
 public class CommentRequest {
 
+    @NotNull
+    @Max(value = 30)
     private String content;
 
     @Setter private Member member;
     @Setter private Board board;
 
     public static Comment toEntity(CommentRequest commentRequest) {
+
         return Comment.of(
             commentRequest.getContent(),
             commentRequest.getMember(),

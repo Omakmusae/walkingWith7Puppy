@@ -7,5 +7,4 @@ public class MemberLoginRequest {
 
     private String username;
     private String password;
-
 }

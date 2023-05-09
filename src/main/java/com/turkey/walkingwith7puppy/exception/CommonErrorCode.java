@@ -12,7 +12,8 @@ public enum CommonErrorCode implements ErrorCode {
 	INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
 	RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception"),
-	IO_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "IO Exception")
+	IO_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "IO Exception"),
+	TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "Invalid token included")
 	;
 
 	private final HttpStatus httpStatus;

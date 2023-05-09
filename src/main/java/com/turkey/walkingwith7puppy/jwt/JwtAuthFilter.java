@@ -1,7 +1,8 @@
 package com.turkey.walkingwith7puppy.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkey.walkingwith7puppy.dto.SecurityExceptionDto;
+import com.turkey.walkingwith7puppy.exception.CommonErrorCode;
+
 import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (token != null) {
             if (!jwtUtil.validateToken(token)) {
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+                jwtExceptionHandler(response);
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
@@ -51,11 +52,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
-        response.setStatus(statusCode);
+    public void jwtExceptionHandler(HttpServletResponse response) {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
+            String json = new ObjectMapper().writeValueAsString(CommonErrorCode.TOKEN_ERROR);
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

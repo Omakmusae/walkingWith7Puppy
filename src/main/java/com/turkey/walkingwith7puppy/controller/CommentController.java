@@ -1,5 +1,7 @@
 package com.turkey.walkingwith7puppy.controller;
 
+import javax.validation.Valid;
+
 import com.turkey.walkingwith7puppy.dto.request.CommentRequest;
 import com.turkey.walkingwith7puppy.security.UserDetailsImpl;
 import com.turkey.walkingwith7puppy.service.CommentService;
@@ -15,30 +17,32 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/boards/{boardId}/comments")
-    public void createComment(
+    public ResponseEntity<Void> createComment(
         @PathVariable final Long boardId,
         @RequestBody final CommentRequest commentRequest,
         @AuthenticationPrincipal final UserDetailsImpl userDetails) {
 
         commentService.createComment(boardId, commentRequest, userDetails.getMember());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PutMapping("/boards/{boardId}/comments/{commentId}")
     public void updateComment(
         @PathVariable final Long boardId,
         @PathVariable final Long commentId,
-        @RequestBody final CommentRequest commentRequest,
+        @RequestBody @Valid final CommentRequest commentRequest,
         @AuthenticationPrincipal final UserDetailsImpl userDetails) {
 
         commentService.updateComment(boardId, commentId, commentRequest, userDetails.getMember());
     }
 
     @DeleteMapping("/boards/{boardId}/comments/{commentId}")
-    public void deleteComment(
+    public ResponseEntity<Void> deleteComment(
         @PathVariable final Long boardId,
         @PathVariable final Long commentId,
         @AuthenticationPrincipal final UserDetailsImpl userDetails) {
 
         commentService.deleteComment(boardId, commentId, userDetails.getMember());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

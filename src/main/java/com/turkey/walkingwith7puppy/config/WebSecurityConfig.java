@@ -43,7 +43,7 @@ public class WebSecurityConfig {
             .and()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/user/**", "/profile").permitAll()
+                .antMatchers("/user/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/boards/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/boards/**").permitAll()
                 .anyRequest().authenticated()
