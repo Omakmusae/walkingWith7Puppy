@@ -1,6 +1,5 @@
 package com.turkey.walkingwith7puppy.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -8,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +41,7 @@ public class BoardController {
 	public ResponseEntity<Void> createBoard(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") final MultipartFile file) {
+		@RequestPart(value = "img") final MultipartFile file) {
 
 		boardService.createBoard(userDetails.getMember(), boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -54,7 +52,7 @@ public class BoardController {
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@PathVariable final Long boardId,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "ImgUrl") final MultipartFile file) {
+		@RequestPart(value = "img") final MultipartFile file) {
 
 		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
