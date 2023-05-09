@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -34,6 +33,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public void login(MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
         String username = memberLoginRequest.getUsername();
         String password = memberLoginRequest.getPassword();
