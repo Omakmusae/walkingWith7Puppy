@@ -5,7 +5,6 @@ import com.turkey.walkingwith7puppy.dto.SecurityExceptionDto;
 import com.turkey.walkingwith7puppy.entity.Member;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 
-import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
