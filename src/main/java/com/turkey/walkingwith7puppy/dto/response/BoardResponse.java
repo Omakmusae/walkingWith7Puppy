@@ -3,7 +3,6 @@ package com.turkey.walkingwith7puppy.dto.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.turkey.walkingwith7puppy.dto.CommentDto;
 import com.turkey.walkingwith7puppy.entity.Board;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ public class BoardResponse {
 	private String address;
 	private String img;
 
-	private List<CommentDto> comments = new ArrayList<>();
+	private List<CommentResponse> comments = new ArrayList<>();
 
 	public static BoardResponse from(Board entity) {
 
@@ -32,7 +31,7 @@ public class BoardResponse {
 			entity.getAddress(),
 			entity.getImg(),
 			entity.getComments()
-				.stream().map(CommentDto::from)
+				.stream().map(CommentResponse::from)
 				.toList()
 		);
 	}
