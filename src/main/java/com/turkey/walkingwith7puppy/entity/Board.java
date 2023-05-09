@@ -14,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,10 +58,10 @@ public class Board extends Timestamped {
         return new Board(title, content, address, img, member);
     }
 
-    public void updateBoard(BoardRequest boardRequest){
-        this.title = boardRequest.getTitle();
-        this.content = boardRequest.getContent();
-        this.address = boardRequest.getAddress();
-        this.img = boardRequest.getImg();
+    public void updateBoard(String title, String content, String address, String img) {
+        this.title = title;
+        this.content = content;
+        this.address = address;
+        this.img = img;
     }
 }

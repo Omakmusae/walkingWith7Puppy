@@ -2,6 +2,7 @@ package com.turkey.walkingwith7puppy.controller;
 
 import javax.validation.Valid;
 
+import com.turkey.walkingwith7puppy.dto.CommentDto;
 import com.turkey.walkingwith7puppy.dto.request.CommentRequest;
 import com.turkey.walkingwith7puppy.security.UserDetailsImpl;
 import com.turkey.walkingwith7puppy.service.CommentService;
@@ -24,7 +25,7 @@ public class CommentController {
         @RequestBody @Valid final CommentRequest commentRequest,
         @AuthenticationPrincipal final UserDetailsImpl userDetails) {
 
-        commentService.createComment(boardId, commentRequest, userDetails.getMember());
+        commentService.createComment(boardId, CommentDto.from(commentRequest), userDetails.getMember());
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
@@ -35,7 +36,7 @@ public class CommentController {
         @RequestBody @Valid final CommentRequest commentRequest,
         @AuthenticationPrincipal final UserDetailsImpl userDetails) {
 
-        commentService.updateComment(boardId, commentId, commentRequest, userDetails.getMember());
+        commentService.updateComment(boardId, commentId, CommentDto.from(commentRequest), userDetails.getMember());
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 

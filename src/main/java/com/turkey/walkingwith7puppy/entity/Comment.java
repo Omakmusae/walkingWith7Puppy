@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.turkey.walkingwith7puppy.dto.request.CommentRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +42,7 @@ public class Comment extends Timestamped {
         return new Comment(content, member, board);
     }
 
-    public void updateContent(CommentRequest commentRequest){
-        this.content = commentRequest.getContent();
+    public void updateContent(String content){
+        this.content = content;
     }
 }
