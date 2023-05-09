@@ -14,7 +14,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
+import com.turkey.walkingwith7puppy.dto.BoardDto;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.entity.Board;
 import com.turkey.walkingwith7puppy.entity.Member;
@@ -63,19 +63,18 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void createBoard(final Member member, final BoardRequest boardRequest, final MultipartFile file) {
+	public void createBoard(final Member member, final BoardDto boardDto, final MultipartFile file) {
 
 		String imagePath = saveImg(file);
 
-		boardRequest.setMember(member);
-		boardRequest.setImg(imagePath);
+		boardDto.setMember(member);
+		boardDto.setImg(imagePath);
 
-		Board board = boardRepository.saveAndFlush(BoardRequest.toEntity(boardRequest));
+		Board board = boardRepository.saveAndFlush(BoardDto.toEntity(boardDto));
 	}
 
-
 	@Transactional
-	public void updateBoard(final Member member, final Long boardId, final BoardRequest boardRequest, final MultipartFile file) {
+	public void updateBoard(final Member member, final Long boardId, final BoardDto boardDto, final MultipartFile file) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
 
@@ -85,9 +84,7 @@ public class BoardService {
 
 		String imagePath = saveImg(file);
 
-		boardRequest.setImg(imagePath);
-
-		board.updateBoard(boardRequest);
+		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), imagePath);
 	}
 
 	@Transactional

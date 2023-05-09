@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.turkey.walkingwith7puppy.dto.BoardDto;
 import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.security.UserDetailsImpl;
@@ -43,7 +44,7 @@ public class BoardController {
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
 		@RequestPart(value = "img") final MultipartFile file) {
 
-		boardService.createBoard(userDetails.getMember(), boardRequest, file);
+		boardService.createBoard(userDetails.getMember(), BoardDto.from(boardRequest), file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
@@ -54,7 +55,7 @@ public class BoardController {
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
 		@RequestPart(value = "img") final MultipartFile file) {
 
-		boardService.updateBoard(userDetails.getMember(), boardId, boardRequest, file);
+		boardService.updateBoard(userDetails.getMember(), boardId, BoardDto.from(boardRequest), file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
