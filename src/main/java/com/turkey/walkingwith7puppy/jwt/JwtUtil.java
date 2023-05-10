@@ -8,7 +8,6 @@ import com.turkey.walkingwith7puppy.exception.RestApiException;
 import com.turkey.walkingwith7puppy.exception.TokenErrorCode;
 import com.turkey.walkingwith7puppy.security.UserDetailsServiceImpl;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -48,7 +47,6 @@ public class JwtUtil {
     private static final long REFRESH_TIME = 24 * 60 * 60 * 1000L;
     private final RefreshTokenRepository refreshTokenRepository;
 
-
     @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;
@@ -61,12 +59,12 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String resolveToken(HttpServletRequest request, String tokentype) {
+    public String resolveToken(HttpServletRequest request, String inputTokenType) {
 
-        String tokenType = tokentype.equals("ACCESS_KEY") ? ACCESS_KEY : REFRESH_KEY;
+        String tokenType = inputTokenType.equals("ACCESS_KEY") ? ACCESS_KEY : REFRESH_KEY;
         String bearerToken = request.getHeader(tokenType);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7); // bearer과 공백 제거
+            return bearerToken.substring(7);
         }
         return null;
     }
@@ -76,13 +74,13 @@ public class JwtUtil {
         return new TokenDto(createToken(username, "Access"), createToken(username, "Refresh"));
     }
 
-    public String createToken(String username, String tokentype) {
+    public String createToken(String username, String inputTokenType) {
 
         Date date = new Date();
         String role = "USER";
-        long expireTime = tokentype.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+        long expireTime = inputTokenType.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
-        String jwToken =  BEARER_PREFIX +
+        return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(username)
                 .claim(AUTHORIZATION_HEADER, role)
@@ -90,8 +88,6 @@ public class JwtUtil {
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
-        System.out.println(jwToken);
-        return jwToken;
     }
 
     public boolean validateToken(String token) {

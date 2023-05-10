@@ -3,18 +3,26 @@ package com.turkey.walkingwith7puppy.service;
 import com.turkey.walkingwith7puppy.dto.TokenDto;
 import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
 import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
+
 import com.turkey.walkingwith7puppy.entity.Member;
 import com.turkey.walkingwith7puppy.entity.RefreshToken;
+
 import com.turkey.walkingwith7puppy.exception.MemberErrorCode;
 import com.turkey.walkingwith7puppy.exception.RestApiException;
+
 import com.turkey.walkingwith7puppy.jwt.JwtUtil;
+
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 import com.turkey.walkingwith7puppy.repository.RefreshTokenRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Optional;
 
 @Service
@@ -27,22 +35,19 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void signup(MemberSignupRequest memberSignupRequest) {
+    public void signup(final MemberSignupRequest memberSignupRequest) {
 
         throwIfExistOwner(memberSignupRequest.getUsername(), memberSignupRequest.getEmail());
-
         String password = passwordEncoder.encode(memberSignupRequest.getPassword());
-
         Member member = MemberSignupRequest.toEntity(memberSignupRequest, password);
         memberRepository.save(member);
     }
 
     @Transactional
-    public void login(MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
+    public void login(final MemberLoginRequest memberLoginRequest, final HttpServletResponse response) {
 
         String username = memberLoginRequest.getUsername();
         String password = memberLoginRequest.getPassword();
-
         Member searchedMember = memberRepository.findByUsername(username).orElseThrow(
             () -> new RestApiException(MemberErrorCode.MEMBER_NOT_FOUND)
         );
@@ -65,6 +70,7 @@ public class MemberService {
         response.addHeader(jwtUtil.ACCESS_KEY, tokenDto.getAccessToken());
         response.addHeader(jwtUtil.REFRESH_KEY, tokenDto.getRefreshToken());
     }
+
 
     private void throwIfExistOwner(String loginUsername, String loginEmail) {
 

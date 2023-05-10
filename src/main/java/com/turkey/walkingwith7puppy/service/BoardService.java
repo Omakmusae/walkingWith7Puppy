@@ -1,7 +1,7 @@
 package com.turkey.walkingwith7puppy.service;
 
 import java.io.IOException;
-import java.util.Comparator;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,6 +14,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import com.turkey.walkingwith7puppy.dto.BoardDto;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.entity.Board;
@@ -30,9 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 
 	private final BoardRepository boardRepository;
-
-	private String S3Bucket = "walkingpuppy7"; // Bucket 이름
 	private final AmazonS3Client amazonS3Client;
+	private String S3Bucket = "walkingpuppy7";
 
 	@Transactional(readOnly = true)
 	public List<BoardResponse> searchBoards() {
@@ -40,7 +40,6 @@ public class BoardService {
 		return boardRepository.findAllJoinFetch()
 			.stream()
 			.map(BoardResponse::from)
-			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
@@ -53,12 +52,11 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BoardResponse> searchBoards(String address) {
+	public List<BoardResponse> searchBoards(final String address) {
 
 		return boardRepository.findByAddressJoinFetch(address)
 			.stream()
 			.map(BoardResponse::from)
-			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
@@ -66,10 +64,8 @@ public class BoardService {
 	public void createBoard(final Member member, final BoardDto boardDto, final MultipartFile file) {
 
 		String imagePath = saveImg(file);
-
 		boardDto.setMember(member);
 		boardDto.setImg(imagePath);
-
 		Board board = boardRepository.saveAndFlush(BoardDto.toEntity(boardDto));
 	}
 
@@ -77,13 +73,9 @@ public class BoardService {
 	public void updateBoard(final Member member, final Long boardId, final BoardDto boardDto, final MultipartFile file) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-
 		throwIfNotOwner(board, member.getUsername());
-
 		deleteImg(board);
-
 		String imagePath = saveImg(file);
-
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), imagePath);
 	}
 
@@ -91,11 +83,8 @@ public class BoardService {
 	public void deleteBoard(final Member member, final Long boardId) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-
 		throwIfNotOwner(board, member.getUsername());
-
 		deleteImg(board);
-
 		boardRepository.delete(board);
 	}
 
@@ -125,14 +114,14 @@ public class BoardService {
 		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 	}
 
-	private Board findBoardByIdOrElseThrow(Long boardId) {
+	private Board findBoardByIdOrElseThrow(final Long boardId) {
 
 		return boardRepository.findById(boardId).orElseThrow(
 			() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)
 		);
 	}
 
-	private void throwIfNotOwner(Board board, String loginUsername) {
+	private void throwIfNotOwner(final Board board, final String loginUsername) {
 
 		if (!board.getMember().getUsername().equals(loginUsername))
 			throw new RestApiException(MemberErrorCode.INACTIVE_MEMBER);

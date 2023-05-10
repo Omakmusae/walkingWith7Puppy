@@ -11,10 +11,11 @@ import com.turkey.walkingwith7puppy.annotation.Username;
 public class UsernameValidator implements ConstraintValidator<Username, String> {
 
 	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
+	public boolean isValid(final String value, final ConstraintValidatorContext context) {
 
 		Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[0-9]).{4,12}$");
 		Matcher matcher = pattern.matcher(value);
+
 		return matcher.matches();
 	}
 }
