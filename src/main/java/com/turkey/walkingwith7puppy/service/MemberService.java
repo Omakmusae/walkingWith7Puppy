@@ -29,7 +29,7 @@ public class MemberService {
     @Transactional
     public void signup(MemberSignupRequest memberSignupRequest) {
 
-        throwIfExistOwner(memberSignupRequest.getUsername());
+        throwIfExistOwner(memberSignupRequest.getUsername(), memberSignupRequest.getEmail());
 
         String password = passwordEncoder.encode(memberSignupRequest.getPassword());
 
@@ -66,13 +66,17 @@ public class MemberService {
         response.addHeader(jwtUtil.REFRESH_KEY, tokenDto.getRefreshToken());
     }
 
-    private void throwIfExistOwner(String loginUsername) {
+    private void throwIfExistOwner(String loginUsername, String loginEmail) {
 
         Optional<Member> searchedMember = memberRepository.findByUsername(loginUsername);
         Optional<Member> searchedEmail = memberRepository.findByEmail(loginEmail);
 
         if (searchedMember.isPresent()) {
             throw new RestApiException(MemberErrorCode.DUPLICATED_MEMBER);
+        }
+
+        if(searchedEmail.isPresent()){
+            throw new RestApiException(MemberErrorCode.DUPLICATED_EMAIL);
         }
     }
 }
