@@ -69,6 +69,7 @@ public class MemberService {
     private void throwIfExistOwner(String loginUsername) {
 
         Optional<Member> searchedMember = memberRepository.findByUsername(loginUsername);
+        Optional<Member> searchedEmail = memberRepository.findByEmail(loginEmail);
 
         if (searchedMember.isPresent()) {
             throw new RestApiException(MemberErrorCode.DUPLICATED_MEMBER);
