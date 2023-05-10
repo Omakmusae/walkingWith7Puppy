@@ -1,7 +1,7 @@
 package com.turkey.walkingwith7puppy.service;
 
 import java.io.IOException;
-import java.util.Comparator;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,9 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 
 	private final BoardRepository boardRepository;
-
-	private String S3Bucket = "walkingpuppy7"; // Bucket 이름
 	private final AmazonS3Client amazonS3Client;
+	private String S3Bucket = "walkingpuppy7";
 
 	@Transactional(readOnly = true)
 	public List<BoardResponse> searchBoards() {
@@ -53,7 +52,7 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BoardResponse> searchBoards(String address) {
+	public List<BoardResponse> searchBoards(final String address) {
 
 		return boardRepository.findByAddressJoinFetch(address)
 			.stream()
@@ -65,10 +64,8 @@ public class BoardService {
 	public void createBoard(final Member member, final BoardDto boardDto, final MultipartFile file) {
 
 		String imagePath = saveImg(file);
-
 		boardDto.setMember(member);
 		boardDto.setImg(imagePath);
-
 		Board board = boardRepository.saveAndFlush(BoardDto.toEntity(boardDto));
 	}
 
@@ -76,13 +73,9 @@ public class BoardService {
 	public void updateBoard(final Member member, final Long boardId, final BoardDto boardDto, final MultipartFile file) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-
 		throwIfNotOwner(board, member.getUsername());
-
 		deleteImg(board);
-
 		String imagePath = saveImg(file);
-
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), imagePath);
 	}
 
@@ -90,11 +83,8 @@ public class BoardService {
 	public void deleteBoard(final Member member, final Long boardId) {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
-
 		throwIfNotOwner(board, member.getUsername());
-
 		deleteImg(board);
-
 		boardRepository.delete(board);
 	}
 

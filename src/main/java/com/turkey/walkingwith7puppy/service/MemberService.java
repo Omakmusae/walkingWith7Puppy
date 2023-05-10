@@ -14,11 +14,15 @@ import com.turkey.walkingwith7puppy.jwt.JwtUtil;
 
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 import com.turkey.walkingwith7puppy.repository.RefreshTokenRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Optional;
 
 @Service
@@ -31,7 +35,7 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void signup(MemberSignupRequest memberSignupRequest) {
+    public void signup(final MemberSignupRequest memberSignupRequest) {
 
         throwIfExistOwner(memberSignupRequest.getUsername());
         String password = passwordEncoder.encode(memberSignupRequest.getPassword());
@@ -40,7 +44,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void login(MemberLoginRequest memberLoginRequest, HttpServletResponse response) {
+    public void login(final MemberLoginRequest memberLoginRequest, final HttpServletResponse response) {
 
         String username = memberLoginRequest.getUsername();
         String password = memberLoginRequest.getPassword();

@@ -1,6 +1,7 @@
 package com.turkey.walkingwith7puppy.security;
 
 import com.turkey.walkingwith7puppy.entity.Member;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +15,13 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
 
     public UserDetailsImpl(Member member, String username) {
+
         this.member = member;
         this.username = username;
     }
 
     public Member getMember() {
+
         return member;
     }
 

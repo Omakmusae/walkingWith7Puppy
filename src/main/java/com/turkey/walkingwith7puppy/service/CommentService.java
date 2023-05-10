@@ -9,6 +9,7 @@ import com.turkey.walkingwith7puppy.exception.MemberErrorCode;
 import com.turkey.walkingwith7puppy.exception.RestApiException;
 import com.turkey.walkingwith7puppy.repository.BoardRepository;
 import com.turkey.walkingwith7puppy.repository.CommentRepository;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -25,10 +26,8 @@ public class CommentService {
     public void createComment(final Long boardId, final CommentDto commentDto, final Member member) {
 
         Board board = findBoardByIdOrElseThrow(boardId);
-
         commentDto.setBoard(board);
         commentDto.setMember(member);
-
         Comment comment = commentRepository.saveAndFlush(CommentDto.toEntity(commentDto));
     }
 
@@ -37,9 +36,7 @@ public class CommentService {
 
         Board board = findBoardByIdOrElseThrow(boardId);
         Comment comment = findCommentByIdOrElseThrow(commentId);
-
         throwIfNotOwner(comment, member.getUsername());
-
         comment.updateContent(commentDto.getContent());
     }
 
