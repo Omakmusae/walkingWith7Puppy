@@ -8,7 +8,6 @@ import com.turkey.walkingwith7puppy.exception.RestApiException;
 import com.turkey.walkingwith7puppy.exception.TokenErrorCode;
 import com.turkey.walkingwith7puppy.security.UserDetailsServiceImpl;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -61,9 +60,9 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String resolveToken(HttpServletRequest request, String tokentype) {
+    public String resolveToken(HttpServletRequest request, String inputTokenType) {
 
-        String tokenType = tokentype.equals("ACCESS_KEY") ? ACCESS_KEY : REFRESH_KEY;
+        String tokenType = inputTokenType.equals("ACCESS_KEY") ? ACCESS_KEY : REFRESH_KEY;
         String bearerToken = request.getHeader(tokenType);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7); // bearer과 공백 제거

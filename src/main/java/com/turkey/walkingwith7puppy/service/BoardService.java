@@ -14,6 +14,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import com.turkey.walkingwith7puppy.dto.BoardDto;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.entity.Board;
@@ -40,7 +41,6 @@ public class BoardService {
 		return boardRepository.findAllJoinFetch()
 			.stream()
 			.map(BoardResponse::from)
-			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
@@ -58,7 +58,6 @@ public class BoardService {
 		return boardRepository.findByAddressJoinFetch(address)
 			.stream()
 			.map(BoardResponse::from)
-			// .sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
@@ -125,14 +124,14 @@ public class BoardService {
 		amazonS3Client.deleteObject(S3Bucket, imgId[imgId.length - 1]);
 	}
 
-	private Board findBoardByIdOrElseThrow(Long boardId) {
+	private Board findBoardByIdOrElseThrow(final Long boardId) {
 
 		return boardRepository.findById(boardId).orElseThrow(
 			() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)
 		);
 	}
 
-	private void throwIfNotOwner(Board board, String loginUsername) {
+	private void throwIfNotOwner(final Board board, final String loginUsername) {
 
 		if (!board.getMember().getUsername().equals(loginUsername))
 			throw new RestApiException(MemberErrorCode.INACTIVE_MEMBER);

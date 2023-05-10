@@ -24,6 +24,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         String authority = "USER";
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -34,31 +35,37 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
+
         return this.username;
     }
 
     @Override
     public String getPassword() {
+
         return null;
     }
 
     @Override
     public boolean isAccountNonExpired() {
+
         return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+
         return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+
         return false;
     }
 
     @Override
     public boolean isEnabled() {
+
         return false;
     }
 

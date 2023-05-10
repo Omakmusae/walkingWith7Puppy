@@ -48,27 +48,25 @@ public class CommentService {
 
         Board board = findBoardByIdOrElseThrow(boardId);
         Comment comment = findCommentByIdOrElseThrow(commentId);
-
         throwIfNotOwner(comment, member.getUsername());
-
         commentRepository.delete(comment);
     }
 
-    private Board findBoardByIdOrElseThrow(Long boardId) {
+    private Board findBoardByIdOrElseThrow(final Long boardId) {
 
         return boardRepository.findById(boardId).orElseThrow(
             () -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)
         );
     }
 
-    private Comment findCommentByIdOrElseThrow(Long commentId) {
+    private Comment findCommentByIdOrElseThrow(final Long commentId) {
 
         return commentRepository.findById(commentId).orElseThrow(
             () -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)
         );
     }
 
-    private void throwIfNotOwner(Comment comment, String loginUsername) {
+    private void throwIfNotOwner(final Comment comment, final String loginUsername) {
 
         if (!comment.getMember().getUsername().equals(loginUsername))
             throw new RestApiException(MemberErrorCode.INACTIVE_MEMBER);

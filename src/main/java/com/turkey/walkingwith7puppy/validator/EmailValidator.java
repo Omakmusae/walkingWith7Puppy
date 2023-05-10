@@ -11,10 +11,11 @@ import com.turkey.walkingwith7puppy.annotation.Email;
 public class EmailValidator implements ConstraintValidator<Email, String> {
 
 	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
+	public boolean isValid(final String value, final ConstraintValidatorContext context) {
 
 		Pattern pattern = Pattern.compile("\\w+@\\w+\\.\\w+(\\.\\w+)?");
 		Matcher matcher = pattern.matcher(value);
+
 		return matcher.matches();
 	}
 }

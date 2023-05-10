@@ -32,20 +32,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String access_token = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
-        String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
+        String accessToken = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
+        String refreshToken = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
 
-
-        if(access_token != null) {
-            if(jwtUtil.validateToken(access_token)) {
-                setAuthentication(jwtUtil.getUserInfoFromToken(access_token));
-            } else if(refresh_token != null && jwtUtil.refreshTokenValidation(refresh_token)) {
-                String username = jwtUtil.getUserInfoFromToken(refresh_token);
-                Member member = memberRepository.findByUsername(username).get();
+        if(accessToken != null) {
+            if(jwtUtil.validateToken(accessToken)) {
+                setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
+            } else if(refreshToken != null && jwtUtil.refreshTokenValidation(refreshToken)) {
+                String username = jwtUtil.getUserInfoFromToken(refreshToken);
                 String newAccessToken = jwtUtil.createToken(username, "Access");
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(username);
-            } else if(refresh_token == null) {
+            } else if(refreshToken == null) {
                 throw new RestApiException(TokenErrorCode.EXPIRED_ACCESS_TOKEN);
             } else {
                 throw new RestApiException(TokenErrorCode.EXPIRED_REFRESH_TOKEN);
