@@ -4,11 +4,8 @@ package com.turkey.walkingwith7puppy.jwt;
 import com.turkey.walkingwith7puppy.dto.TokenDto;
 import com.turkey.walkingwith7puppy.entity.RefreshToken;
 import com.turkey.walkingwith7puppy.repository.RefreshTokenRepository;
-import com.turkey.walkingwith7puppy.exception.RestApiException;
-import com.turkey.walkingwith7puppy.exception.TokenErrorCode;
 import com.turkey.walkingwith7puppy.security.UserDetailsServiceImpl;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -82,7 +79,7 @@ public class JwtUtil {
         String role = "USER";
         long expireTime = tokentype.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
-        String jwToken =  BEARER_PREFIX +
+        return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(username)
                 .claim(AUTHORIZATION_HEADER, role)
@@ -90,8 +87,6 @@ public class JwtUtil {
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
-        System.out.println(jwToken);
-        return jwToken;
     }
 
     public boolean validateToken(String token) {
