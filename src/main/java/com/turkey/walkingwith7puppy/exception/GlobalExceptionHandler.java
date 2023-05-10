@@ -52,28 +52,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		log.warn("Invalid Request Parameter errors : {}", errorList);
 
-		return this.makeErrorResponseEntity(errorList.toString());
+		return this.makeErrorResponseEntity(errorList.toString(), CommonErrorCode.INVALID_REQUEST_PARAMETER);
 	}
 
 	private ResponseEntity<ErrorResponse> makeErrorResponseEntity(final ErrorCode errorCode) {
 
 		return ResponseEntity
 			.status(errorCode.getHttpStatus())
-			.body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+			.body(new ErrorResponse(errorCode.name(), errorCode.getHttpStatus().toString(), errorCode.getMessage()));
 	}
 
-	private ResponseEntity<Object> makeErrorResponseEntity(final String errorDescription) {
+	private ResponseEntity<Object> makeErrorResponseEntity(final String errorDescription, final ErrorCode errorCode) {
 
 		return ResponseEntity
-			.status(HttpStatus.BAD_REQUEST)
-			.body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), errorDescription));
+			.status(errorCode.getHttpStatus())
+			.body(new ErrorResponse(errorCode.name(), errorCode.getHttpStatus().toString(), errorDescription));
 	}
 
 	@Getter
 	@RequiredArgsConstructor
 	static class ErrorResponse {
 
-		private final String codeName;
+		private final String errorCode;
+		private final String status;
 		private final String message;
 	}
 }
