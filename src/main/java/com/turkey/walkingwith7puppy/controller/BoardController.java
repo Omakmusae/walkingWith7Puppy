@@ -16,14 +16,24 @@ import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.security.UserDetailsImpl;
 import com.turkey.walkingwith7puppy.service.BoardService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "boards", description = "게시물 API")
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
 
 	private final BoardService boardService;
 
+	@Operation(summary = "get boards", description = "게시물 전체를 가져오기")
 	@GetMapping("/boards")
 	public ResponseEntity<List<BoardResponse>> getBoardList() {
 
@@ -31,6 +41,7 @@ public class BoardController {
 				.body(boardService.searchBoards());
 	}
 
+	@Operation(summary = "get boards/id", description = "선택된 게시물 가져오기")
 	@GetMapping("/boards/{boardId}")
 	public ResponseEntity<BoardResponse> getBoard(@PathVariable final Long boardId) {
 
@@ -38,6 +49,7 @@ public class BoardController {
 				.body(boardService.searchBoard(boardId));
 	}
 
+	@Operation(summary = "post boards", description = "게시물 작성하기")
 	@PostMapping("/boards")
 	public ResponseEntity<Void> createBoard(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
@@ -48,6 +60,7 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
+	@Operation(summary = "put boards/id", description = "게시물 수정하기")
 	@PutMapping("/boards/{boardId}")
 	public ResponseEntity<Void> updateBoard(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
@@ -59,6 +72,7 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
+	@Operation(summary = "delete boards/id", description = "게시물 수정하기")
 	@DeleteMapping("/boards/{boardId}")
 	public ResponseEntity<Void> deleteArticle(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
@@ -68,6 +82,7 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
+	@Operation(summary = "get boards/지역구", description = "지역구에 따른 게시물 검색하기")
 	@GetMapping("/boards/search")
 	public ResponseEntity<List<BoardResponse>> searchBoardList(@RequestParam String address) {
 

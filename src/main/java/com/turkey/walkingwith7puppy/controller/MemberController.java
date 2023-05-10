@@ -3,6 +3,8 @@ package com.turkey.walkingwith7puppy.controller;
 import com.turkey.walkingwith7puppy.dto.request.MemberLoginRequest;
 import com.turkey.walkingwith7puppy.dto.request.MemberSignupRequest;
 import com.turkey.walkingwith7puppy.service.MemberService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-
+    @Operation(summary = "post user/signup", description = "회원가입 하기")
     @PostMapping("/user/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid final MemberSignupRequest memberSignupRequest) {
 
@@ -27,6 +29,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @Operation(summary = "post user/login", description = "로그인하기")
     @PostMapping("/user/login")
     public ResponseEntity<Void> login(
         @RequestBody final MemberLoginRequest memberLoginRequest,
