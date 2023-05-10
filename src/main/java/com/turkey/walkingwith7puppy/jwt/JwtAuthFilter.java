@@ -1,6 +1,5 @@
 package com.turkey.walkingwith7puppy.jwt;
 
-import com.turkey.walkingwith7puppy.entity.Member;
 import com.turkey.walkingwith7puppy.exception.RestApiException;
 import com.turkey.walkingwith7puppy.exception.TokenErrorCode;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
@@ -60,17 +59,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
     }
-
-    // public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
-    //
-    //     response.setStatus(statusCode);
-    //     response.setContentType("application/json");
-    //     try {
-    //         String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
-    //         response.getWriter().write(json);
-    //     } catch (Exception e) {
-    //         log.error(e.getMessage());
-    //     }
-    // }
-
 }
