@@ -74,10 +74,17 @@ public class BoardService {
 
 		Board board = findBoardByIdOrElseThrow(boardId);
 		throwIfNotOwner(board, member.getUsername());
-		deleteImg(board);
-		String imagePath = saveImg(file);
+		String imagePath;
+		if(file == null){
+			imagePath = board.getImg();
+		}
+		else{
+			deleteImg(board);
+			imagePath = saveImg(file);
+		}
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), imagePath);
 	}
+
 
 	@Transactional
 	public void deleteBoard(final Member member, final Long boardId) {
@@ -126,4 +133,6 @@ public class BoardService {
 		if (!board.getMember().getUsername().equals(loginUsername))
 			throw new RestApiException(MemberErrorCode.INACTIVE_MEMBER);
 	}
+
+
 }
