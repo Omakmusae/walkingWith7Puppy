@@ -61,6 +61,8 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000");
         config.addExposedHeader(JwtUtil.AUTHORIZATION_HEADER);
+        config.addExposedHeader(JwtUtil.ACCESS_KEY);
+        config.addExposedHeader(JwtUtil.REFRESH_KEY);
 
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
