@@ -2,6 +2,7 @@
 항해99 프론트 백엔드 협업 프로젝트 7조
 <div align="center">
 <img width="329" alt="image" src="https://user-images.githubusercontent.com/50205887/207568862-cdc9e2c0-b03c-43ff-bf46-3ba79a110d0c.png">
+</div>
 
 # Walking With Puppy v1.0
 > **Hanghae99 Mini Project 7조 백엔드** <br/> **개발기간: 2023.05.04 ~ 2022.05.11**
