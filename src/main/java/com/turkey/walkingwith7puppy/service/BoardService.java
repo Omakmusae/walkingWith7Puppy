@@ -82,7 +82,6 @@ public class BoardService {
 			deleteImg(board);
 			imagePath = saveImg(file);
 		}
-
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), imagePath);
 	}
 
