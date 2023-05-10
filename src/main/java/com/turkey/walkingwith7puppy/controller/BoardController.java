@@ -53,7 +53,7 @@ public class BoardController {
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@PathVariable final Long boardId,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
-		@RequestPart(value = "img") final MultipartFile file) {
+		@RequestPart(value = "img", required = false) MultipartFile file) {
 
 		boardService.updateBoard(userDetails.getMember(), boardId, BoardDto.from(boardRequest), file);
 		return ResponseEntity.status(HttpStatus.OK).body(null);
