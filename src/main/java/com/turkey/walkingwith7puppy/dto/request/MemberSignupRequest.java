@@ -25,5 +25,4 @@ public class MemberSignupRequest {
                 memberSignupRequest.getEmail()
         );
     }
-
 }

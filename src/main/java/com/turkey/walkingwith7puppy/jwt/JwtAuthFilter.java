@@ -1,10 +1,12 @@
 package com.turkey.walkingwith7puppy.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.turkey.walkingwith7puppy.dto.SecurityExceptionDto;
 import com.turkey.walkingwith7puppy.entity.Member;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
-
+import com.turkey.walkingwith7puppy.exception.CommonErrorCode;
+import io.jsonwebtoken.Claims;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String access_token = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
         String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
 
+
         if(access_token != null) {
             if(jwtUtil.validateToken(access_token)) {
                 setAuthentication(jwtUtil.getUserInfoFromToken(access_token));
@@ -63,7 +66,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 
-    // 예외 핸들러
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
 
         response.setStatus(statusCode);
@@ -75,4 +77,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
         }
     }
+
 }

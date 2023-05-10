@@ -1,6 +1,6 @@
 package com.turkey.walkingwith7puppy.service;
 
-import com.turkey.walkingwith7puppy.dto.request.CommentRequest;
+import com.turkey.walkingwith7puppy.dto.CommentDto;
 import com.turkey.walkingwith7puppy.entity.Board;
 import com.turkey.walkingwith7puppy.entity.Comment;
 import com.turkey.walkingwith7puppy.entity.Member;
@@ -22,25 +22,25 @@ public class CommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public void createComment(final Long boardId, final CommentRequest commentRequest, final Member member) {
+    public void createComment(final Long boardId, final CommentDto commentDto, final Member member) {
 
         Board board = findBoardByIdOrElseThrow(boardId);
 
-        commentRequest.setBoard(board);
-        commentRequest.setMember(member);
+        commentDto.setBoard(board);
+        commentDto.setMember(member);
 
-        Comment comment = commentRepository.saveAndFlush(CommentRequest.toEntity(commentRequest));
+        Comment comment = commentRepository.saveAndFlush(CommentDto.toEntity(commentDto));
     }
 
     @Transactional
-    public void updateComment(final Long boardId, final Long commentId, final CommentRequest commentRequest, final Member member) {
+    public void updateComment(final Long boardId, final Long commentId, final CommentDto commentDto, final Member member) {
 
         Board board = findBoardByIdOrElseThrow(boardId);
         Comment comment = findCommentByIdOrElseThrow(commentId);
 
         throwIfNotOwner(comment, member.getUsername());
 
-        comment.updateContent(commentRequest);
+        comment.updateContent(commentDto.getContent());
     }
 
     @Transactional
