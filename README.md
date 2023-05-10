@@ -55,7 +55,7 @@ For building and running the application you need:
   - 주소 기반 검색
 - Spring Security
   - access 및 refresh token을 통한 회원인증
-- 민감 정보 JasyptC
+- 민감 정보 Jasypt
 
 ---
 ## 아키텍쳐
