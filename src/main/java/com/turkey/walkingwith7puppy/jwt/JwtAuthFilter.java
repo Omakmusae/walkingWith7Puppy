@@ -1,6 +1,8 @@
 package com.turkey.walkingwith7puppy.jwt;
 
-import com.turkey.walkingwith7puppy.exception.RestApiException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.turkey.walkingwith7puppy.dto.response.ErrorResponse;
+import com.turkey.walkingwith7puppy.exception.ErrorCode;
 import com.turkey.walkingwith7puppy.exception.TokenErrorCode;
 import com.turkey.walkingwith7puppy.repository.MemberRepository;
 
@@ -44,9 +46,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(username);
             } else if(refreshToken == null) {
-                throw new RestApiException(TokenErrorCode.EXPIRED_ACCESS_TOKEN);
+                jwtExceptionHandler(response, TokenErrorCode.EXPIRED_ACCESS_TOKEN);
+                return;
             } else {
-                throw new RestApiException(TokenErrorCode.EXPIRED_REFRESH_TOKEN);
+                jwtExceptionHandler(response, TokenErrorCode.EXPIRED_REFRESH_TOKEN);
+                return;
             }
         }
         filterChain.doFilter(request, response);
@@ -58,5 +62,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         Authentication authentication = jwtUtil.createAuthentication(username);
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+    }
+
+    public void jwtExceptionHandler(HttpServletResponse response, ErrorCode errorCode) {
+
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setContentType("application/json");
+        try {
+            String json = new ObjectMapper()
+                .writeValueAsString(new ErrorResponse(
+                    errorCode.name(),
+                    errorCode.getHttpStatus().toString(),
+                    errorCode.getMessage()));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.turkey.walkingwith7puppy.dto.response.ErrorResponse;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -67,14 +67,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity
 			.status(errorCode.getHttpStatus())
 			.body(new ErrorResponse(errorCode.name(), errorCode.getHttpStatus().toString(), errorDescription));
-	}
-
-	@Getter
-	@RequiredArgsConstructor
-	static class ErrorResponse {
-
-		private final String errorCode;
-		private final String status;
-		private final String message;
 	}
 }
