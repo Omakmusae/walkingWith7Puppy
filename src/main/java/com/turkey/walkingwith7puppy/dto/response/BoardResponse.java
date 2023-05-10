@@ -1,5 +1,6 @@
 package com.turkey.walkingwith7puppy.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class BoardResponse {
 
 	private List<CommentResponse> comments = new ArrayList<>();
 
+	private LocalDateTime createdAt;
+	private LocalDateTime modifiedAt;
+
 	public static BoardResponse from(Board entity) {
 
 		return new BoardResponse(
@@ -32,7 +36,9 @@ public class BoardResponse {
 			entity.getImg(),
 			entity.getComments()
 				.stream().map(CommentResponse::from)
-				.toList()
+				.toList(),
+			entity.getCreatedAt(),
+			entity.getModifiedAt()
 		);
 	}
 }
