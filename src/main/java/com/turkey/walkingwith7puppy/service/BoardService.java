@@ -2,6 +2,7 @@ package com.turkey.walkingwith7puppy.service;
 
 import java.io.IOException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class BoardService {
 		return boardRepository.findAllJoinFetch()
 			.stream()
 			.map(BoardResponse::from)
+			.sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
@@ -57,6 +59,7 @@ public class BoardService {
 		return boardRepository.findByAddressJoinFetch(address)
 			.stream()
 			.map(BoardResponse::from)
+			.sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 
