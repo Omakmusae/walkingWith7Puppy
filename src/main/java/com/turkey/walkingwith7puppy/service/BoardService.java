@@ -52,6 +52,7 @@ public class BoardService {
 			.collect(Collectors.toList());
 	}
 
+	@Cacheable
 	@Transactional(readOnly = true)
 	public BoardResponse searchBoard(final Long boardId) {
 
