@@ -35,14 +35,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-@CacheConfig(cacheNames = "boards")
+@CacheConfig(cacheNames = {"boardsAll", "board"})
 public class BoardService {
 
 	private final BoardRepository boardRepository;
 	private final AmazonS3Client amazonS3Client;
 	private String S3Bucket = "walkingpuppy7";
 
-	@Cacheable
+	@Cacheable(value = "boardsAll")
 	@Transactional(readOnly = true)
 	public List<BoardListResponse> searchBoards() {
 
@@ -52,8 +52,7 @@ public class BoardService {
 			.sorted(Comparator.comparing(BoardListResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
-
-	@Cacheable
+	@Cacheable(value = "board")
 	@Transactional(readOnly = true)
 	public BoardResponse searchBoard(final Long boardId) {
 
@@ -72,7 +71,7 @@ public class BoardService {
 			.collect(Collectors.toList());
 	}
 
-	@CacheEvict(value = "boards", allEntries = true)
+	@CacheEvict(value = {"boardsAll", "board"}, allEntries = true)
 	@Transactional
 	public void createBoard(final Member member, final BoardDto boardDto, final MultipartFile file) {
 
@@ -82,7 +81,7 @@ public class BoardService {
 		Board board = boardRepository.saveAndFlush(BoardDto.toEntity(boardDto));
 	}
 
-	@CacheEvict(value = "boards", allEntries = true)
+	@CacheEvict(value = {"boardsAll", "board"}, allEntries = true)
 	@Transactional
 	public void updateBoard(final Member member, final Long boardId, final BoardDto boardDto, final MultipartFile file) {
 
@@ -100,7 +99,7 @@ public class BoardService {
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), boardDto.getImg());
 	}
 
-	@CacheEvict(value = "boards", allEntries = true)
+	@CacheEvict(value = {"boardsAll", "board"}, allEntries = true)
 	@Transactional
 	public void deleteBoard(final Member member, final Long boardId) {
 
@@ -110,8 +109,8 @@ public class BoardService {
 		boardRepository.delete(board);
 	}
 
-	@Scheduled(fixedRate = 600000)
-	@CacheEvict(value = "boards", allEntries = true)
+	@Scheduled(fixedRate = 300000)
+	@CacheEvict(value = {"boardsAll", "board"}, allEntries = true)
 	public void evictAllBoardsCache() {
 
 	}
