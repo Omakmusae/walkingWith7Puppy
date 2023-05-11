@@ -56,7 +56,8 @@ For building and running the application you need:
   - 주소 기반 검색
 - Spring Security
   - access 및 refresh token을 통한 회원인증
-- 민감 정보 Jasypt를 이용한 암호화
+- Spring Boot Cache 적용을 통한 게시물 조회 성능 개선
+- Jasypt를 이용한 민감 정보 암호화
   - DB 정보, AWS IAM 엑세스키, 시크릿키
 - Form-data형식을 통한 Json정보와, 이미지 파일 데이터 수신 및 처리
 - RDS mysql 연결 및 S3 버킷 연결
