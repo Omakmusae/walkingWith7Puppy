@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +34,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@CacheConfig(cacheNames = "boards")
 public class BoardService {
 
 	private final BoardRepository boardRepository;
 	private final AmazonS3Client amazonS3Client;
 	private String S3Bucket = "walkingpuppy7";
 
+	@Cacheable
 	@Transactional(readOnly = true)
 	public List<BoardResponse> searchBoards() {
 
@@ -63,6 +70,7 @@ public class BoardService {
 			.collect(Collectors.toList());
 	}
 
+	@CacheEvict(value = "boards", allEntries = true)
 	@Transactional
 	public void createBoard(final Member member, final BoardDto boardDto, final MultipartFile file) {
 
@@ -72,6 +80,7 @@ public class BoardService {
 		Board board = boardRepository.saveAndFlush(BoardDto.toEntity(boardDto));
 	}
 
+	@CacheEvict(value = "boards", allEntries = true)
 	@Transactional
 	public void updateBoard(final Member member, final Long boardId, final BoardDto boardDto, final MultipartFile file) {
 
@@ -89,6 +98,7 @@ public class BoardService {
 		board.updateBoard(boardDto.getTitle(), boardDto.getContent(), boardDto.getAddress(), boardDto.getImg());
 	}
 
+	@CacheEvict(value = "boards", allEntries = true)
 	@Transactional
 	public void deleteBoard(final Member member, final Long boardId) {
 
@@ -96,6 +106,12 @@ public class BoardService {
 		throwIfNotOwner(board, member.getUsername());
 		deleteImg(board);
 		boardRepository.delete(board);
+	}
+
+	@Scheduled(fixedRate = 600000)
+	@CacheEvict(value = "boards", allEntries = true)
+	public void evictAllBoardsCache() {
+
 	}
 
 	private String saveImg (final MultipartFile file) {
