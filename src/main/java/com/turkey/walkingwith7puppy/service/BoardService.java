@@ -22,6 +22,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import com.turkey.walkingwith7puppy.dto.BoardDto;
+import com.turkey.walkingwith7puppy.dto.response.BoardListResponse;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.entity.Board;
 import com.turkey.walkingwith7puppy.entity.Member;
@@ -43,12 +44,12 @@ public class BoardService {
 
 	@Cacheable
 	@Transactional(readOnly = true)
-	public List<BoardResponse> searchBoards() {
+	public List<BoardListResponse> searchBoards() {
 
 		return boardRepository.findAllJoinFetch()
 			.stream()
-			.map(BoardResponse::from)
-			.sorted(Comparator.comparing(BoardResponse::getCreatedAt).reversed())
+			.map(BoardListResponse::from)
+			.sorted(Comparator.comparing(BoardListResponse::getCreatedAt).reversed())
 			.collect(Collectors.toList());
 	}
 

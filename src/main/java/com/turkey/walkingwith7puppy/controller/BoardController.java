@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.turkey.walkingwith7puppy.dto.BoardDto;
 import com.turkey.walkingwith7puppy.dto.request.BoardRequest;
+import com.turkey.walkingwith7puppy.dto.response.BoardListResponse;
 import com.turkey.walkingwith7puppy.dto.response.BoardResponse;
 import com.turkey.walkingwith7puppy.security.UserDetailsImpl;
 import com.turkey.walkingwith7puppy.service.BoardService;
@@ -33,7 +34,7 @@ public class BoardController {
 
 	@Operation(summary = "get boards", description = "게시물 전체를 가져오기")
 	@GetMapping("/boards")
-	public ResponseEntity<List<BoardResponse>> getBoardList() {
+	public ResponseEntity<List<BoardListResponse>> getBoardList() {
 
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(boardService.searchBoards());
