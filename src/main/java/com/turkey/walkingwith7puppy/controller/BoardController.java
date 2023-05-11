@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,8 @@ import com.turkey.walkingwith7puppy.service.BoardService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -50,9 +48,12 @@ public class BoardController {
 	}
 
 	@Operation(summary = "post boards", description = "게시물 작성하기")
-	@PostMapping("/boards")
+	@Parameter(name = "ACCESS_KEY", description = "ACCESS_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
+	@Parameter(name = "REFRESH_KEY", description = "REFRESH_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
+	@PostMapping(value ="/boards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Void> createBoard(
-		@AuthenticationPrincipal final UserDetailsImpl userDetails,
+
+		@Parameter(hidden = true) @AuthenticationPrincipal final UserDetailsImpl userDetails,
 		@RequestPart(value = "data") @Valid final BoardRequest boardRequest,
 		@RequestPart(value = "img") final MultipartFile file) {
 
@@ -61,6 +62,8 @@ public class BoardController {
 	}
 
 	@Operation(summary = "put boards/id", description = "게시물 수정하기")
+	@Parameter(name = "엑세스키", description = "ACCESS_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
+	@Parameter(name = "리프레쉬키", description = "REFRESH_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
 	@PutMapping("/boards/{boardId}")
 	public ResponseEntity<Void> updateBoard(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,
@@ -72,7 +75,9 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
-	@Operation(summary = "delete boards/id", description = "게시물 수정하기")
+	@Operation(summary = "delete boards/id", description = "게시물 삭제하기")
+	@Parameter(name = "엑세스키", description = "ACCESS_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
+	@Parameter(name = "리프레쉬키", description = "REFRESH_KEY", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
 	@DeleteMapping("/boards/{boardId}")
 	public ResponseEntity<Void> deleteArticle(
 		@AuthenticationPrincipal final UserDetailsImpl userDetails,

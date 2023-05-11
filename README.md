@@ -1,14 +1,14 @@
 # walkingWith7Puppy
 항해99 프론트 백엔드 협업 프로젝트 7조
 <div align="center">
-<img width="329" alt="image" src="https://user-images.githubusercontent.com/50205887/207568862-cdc9e2c0-b03c-43ff-bf46-3ba79a110d0c.png">
+<img width="329" alt="image" src="https://walkingpuppy7.s3.ap-northeast-2.amazonaws.com/%EB%A1%9C%EA%B3%A0.PNG">
 </div>
 
 # Walking With Puppy v1.0
 > **Hanghae99 Mini Project 7조 백엔드** <br/> **개발기간: 2023.05.04 ~ 2022.05.11**
 > 
 > ## 배포 주소
-> **프론트 서버** : [프론트엔드 서버 주소](프론트엔드 주소)<br>
+> **프론트 서버** : [http://walking-with-puppy.s3-website.ap-northeast-2.amazonaws.com/](http://walking-with-puppy.s3-website.ap-northeast-2.amazonaws.com/)<br>
 > **백엔드 서버** : [http://ec2-3-34-51-88.ap-northeast-2.compute.amazonaws.com:8080](http://ec2-3-34-51-88.ap-northeast-2.compute.amazonaws.com:8080)<br>
 
 ## 백엔드 개발팀
@@ -42,9 +42,9 @@ For building and running the application you need:
 ## 화면 구성 📺
 |                                                             메인 페이지                                                             |                                                            로그인 페이지                                                             |
 |:------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------:|
-| <img width="329" src="https://user-images.githubusercontent.com/50205887/208036155-a57900f7-c68a-470d-923c-ff3c296ea635.png"/> | <img width="329" src="https://user-images.githubusercontent.com/50205887/208036645-a76cf400-85bc-4fa2-af72-86d2abf61366.png"/> |  
+| <img width="329" src="https://walkingpuppy7.s3.ap-northeast-2.amazonaws.com/%EB%A9%94%EC%9D%B8%ED%8E%98%EC%9D%B4%EC%A7%80.PNG"/> | <img width="329" src="https://walkingpuppy7.s3.ap-northeast-2.amazonaws.com/%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%8E%98%EC%9D%B4%EC%A7%80.PNG"/> |  
 |                                                           게시물 조회 페이지                                                           |                                                           게시물 작성 페이지                                                           |
-| <img width="329" src="https://user-images.githubusercontent.com/50205887/208036155-a57900f7-c68a-470d-923c-ff3c296ea635.png"/> | <img width="329" src="https://user-images.githubusercontent.com/50205887/208036645-a76cf400-85bc-4fa2-af72-86d2abf61366.png"/> |  
+| <img width="329" src="https://walkingpuppy7.s3.ap-northeast-2.amazonaws.com/%EA%B2%8C%EC%8B%9C%EB%AC%BC%EC%A1%B0%ED%9A%8C.PNG"/> | <img width="329" src="https://walkingpuppy7.s3.ap-northeast-2.amazonaws.com/%EA%B2%8C%EC%8B%9C%EB%AC%BC%EC%9E%91%EC%84%B1.PNG"/> |  
 
 
 ---
@@ -56,7 +56,12 @@ For building and running the application you need:
   - 주소 기반 검색
 - Spring Security
   - access 및 refresh token을 통한 회원인증
-- 민감 정보 Jasypt를 이용한 민
+- 민감 정보 Jasypt를 이용한 암호화
+  - DB 정보, AWS IAM 엑세스키, 시크릿키
+- Form-data형식을 통한 Json정보와, 이미지 파일 데이터 수신 및 처리
+- RDS mysql 연결 및 S3 버킷 연결
+- Swagger을 통한 문서자동화 기능 사용
+- FE와 원활한 데이터 송수신
 
 ---
 ## 아키텍쳐
@@ -113,10 +118,10 @@ For building and running the application you need:
 │   ├── security
 │   │   │── UserDetailsImpl
 │   │   └── UserDetailsServiceImpl
-│   ├── service
-│   │   │── BoardService
-│   │   │── CommentService
-│   │   └── MemberService
+└───── service
+        │── BoardService
+        │── CommentService
+        └── MemberService
 
 ```
 
