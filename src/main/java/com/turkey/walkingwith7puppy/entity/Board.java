@@ -39,7 +39,7 @@ public class Board extends Timestamped {
     @Column
     private String img;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 

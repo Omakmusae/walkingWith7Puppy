@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-	@Query("select distinct B from Board B left join fetch B.comments")
+	@Query("select distinct B from Board B left join fetch B.member")
 	List<Board> findAllJoinFetch();
 
 	@Query("select distinct B from Board B left join fetch B.comments where B.address like %:address%")
