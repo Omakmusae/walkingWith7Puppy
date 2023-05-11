@@ -1,9 +1,6 @@
 package com.turkey.walkingwith7puppy.dto.response;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 import com.turkey.walkingwith7puppy.entity.Board;
 
@@ -12,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BoardResponse {
+public class BoardListResponse {
 
 	private Long id;
 	private String title;
@@ -21,25 +18,18 @@ public class BoardResponse {
 	private String address;
 	private String img;
 
-	private List<CommentResponse> comments = new ArrayList<>();
-
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 
-	public static BoardResponse from(Board entity) {
+	public static BoardListResponse from(Board entity) {
 
-		return new BoardResponse(
+		return new BoardListResponse(
 			entity.getId(),
 			entity.getTitle(),
 			entity.getContent(),
 			entity.getMember().getUsername(),
 			entity.getAddress(),
 			entity.getImg(),
-			entity.getComments()
-				.stream()
-				.map(CommentResponse::from)
-				.sorted(Comparator.comparing(CommentResponse::getCreatedAt))
-				.toList(),
 			entity.getCreatedAt(),
 			entity.getModifiedAt()
 		);
