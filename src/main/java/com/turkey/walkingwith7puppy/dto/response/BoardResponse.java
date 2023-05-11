@@ -1,9 +1,6 @@
 package com.turkey.walkingwith7puppy.dto.response;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 import com.turkey.walkingwith7puppy.entity.Board;
 
@@ -21,7 +18,7 @@ public class BoardResponse {
 	private String address;
 	private String img;
 
-	private List<CommentResponse> comments = new ArrayList<>();
+	// private List<CommentResponse> comments = new ArrayList<>();
 
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
@@ -35,11 +32,11 @@ public class BoardResponse {
 			entity.getMember().getUsername(),
 			entity.getAddress(),
 			entity.getImg(),
-			entity.getComments()
-				.stream()
-				.map(CommentResponse::from)
-				.sorted(Comparator.comparing(CommentResponse::getCreatedAt))
-				.toList(),
+			// entity.getComments()
+			// 	.stream()
+			// 	.map(CommentResponse::from)
+			// 	.sorted(Comparator.comparing(CommentResponse::getCreatedAt))
+			// 	.toList(),
 			entity.getCreatedAt(),
 			entity.getModifiedAt()
 		);
